@@ -1,8 +1,12 @@
 package sisventaGroup.sisventaArtifact.modules.auth;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sisventaGroup.sisventaArtifact.modules.auth.dtos.LoginRequest;
+import sisventaGroup.sisventaArtifact.modules.auth.dtos.LoginResponse;
+import sisventaGroup.sisventaArtifact.modules.auth.dtos.RegisterRequest;
+import sisventaGroup.sisventaArtifact.modules.auth.dtos.RegisterResponse;
 
 
 @RestController
@@ -16,12 +20,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(
+    public ResponseEntity<LoginResponse> login(
             @RequestBody LoginRequest request
     ) {
 
-        String token=authService.login(request);
+        LoginResponse response=authService.login(request);
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest user){
+        RegisterResponse response=authService.register(user);
+        return ResponseEntity.ok(response);
     }
 }
