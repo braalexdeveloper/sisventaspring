@@ -5,11 +5,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.web.multipart.MultipartFile;
 import sisventaGroup.sisventaArtifact.Errors.ResourceNotFoundException;
 import sisventaGroup.sisventaArtifact.modules.categories.CategoryEntity;
 import sisventaGroup.sisventaArtifact.modules.categories.CategoryRepository;
+import sisventaGroup.sisventaArtifact.modules.products.dtos.ProductFilterRequest;
 import sisventaGroup.sisventaArtifact.modules.products.dtos.RequestProductDto;
 import sisventaGroup.sisventaArtifact.modules.products.dtos.ResponseProductDto;
 
@@ -18,7 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.stream.Collectors;
+
 
 @Service
 public class ProductService {
@@ -31,9 +32,31 @@ public class ProductService {
         this.categoryRepository=categoryRepository;
     }
 
-    public Page<ResponseProductDto> getProducts(int page, int size, String sortBy){
+    public Page<ResponseProductDto> getProducts(int page, int size, String sortBy, ProductFilterRequest filter){
         Pageable pageable= PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,sortBy));
-        Page<Product> productsPage=productRepository.findAll(pageable);
+        Page<Product> productsPage;
+
+        String name=filter.getName();
+        String categoryName=filter.getCategoryName();
+
+        if(name!=null && !name.isBlank() && categoryName!=null && !categoryName.isBlank()){
+          productsPage=productRepository.findByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(name,categoryName,pageable);
+        }else if(name != null && !name.isBlank()){
+productsPage=productRepository.findByNameContainingIgnoreCase(name,pageable);
+        }else if (categoryName != null && !categoryName.isBlank()) {
+
+            productsPage =
+                    productRepository.findByCategory_NameContainingIgnoreCase(
+                            categoryName,
+                            pageable
+                    );
+
+        } else {
+
+            productsPage = productRepository.findAll(pageable);
+        }
+
+
       return productsPage.map(this::convertToResponseProductDto);
     }
 
@@ -47,7 +70,6 @@ public class ProductService {
         return convertToResponseProductDto(productSave);
     }
 
-    @Transactional
     public ResponseProductDto updateProduct(RequestProductDto requestProduct,Long id){
         Product productFound=productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Producto no encontrado!"));
 
@@ -57,7 +79,7 @@ public class ProductService {
         return convertToResponseProductDto(productUpdated);
     }
 
-    @Transactional
+
     public String deleteProduct(Long id){
        Product productFound=productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Producto no encontrado!"));
         if(productFound.getImage()!=null){

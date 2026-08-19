@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sisventaGroup.sisventaArtifact.Errors.ResourceNotFoundException;
 import sisventaGroup.sisventaArtifact.modules.auth.dtos.LoginRequest;
 import sisventaGroup.sisventaArtifact.modules.auth.dtos.LoginResponse;
@@ -58,6 +59,7 @@ public class AuthService {
                 user.getRole().getName()
         );
     }
+
 
     public RegisterResponse register(RegisterRequest request){
         Role role=roleRepository.findByName("User").orElseThrow(()->new ResourceNotFoundException("Rol no encontrado"));

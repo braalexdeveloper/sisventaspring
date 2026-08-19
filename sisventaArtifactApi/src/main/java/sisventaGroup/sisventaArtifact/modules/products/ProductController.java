@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sisventaGroup.sisventaArtifact.modules.products.dtos.ProductFilterRequest;
 import sisventaGroup.sisventaArtifact.modules.products.dtos.RequestProductDto;
 import sisventaGroup.sisventaArtifact.modules.products.dtos.ResponseProductDto;
 import sisventaGroup.sisventaArtifact.shared.ResponseBuilder;
@@ -23,9 +24,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Map<String,Object>> getProducts(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "5") int size,@RequestParam(defaultValue = "id") String sortBy){
+    public ResponseEntity<Map<String,Object>> getProducts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "id") String sortBy, ProductFilterRequest filter){
 
-     Page<ResponseProductDto> products=productService.getProducts(page,size,sortBy);
+     Page<ResponseProductDto> products=productService.getProducts(page,size,sortBy,filter);
 
      return ResponseEntity.ok(new ResponseBuilder().msg("Productos obtenidos con éxito").add("products",products.getContent()).add("page",products.getNumber()).add("size",products.getSize()).add("totalElements", products.getTotalElements())
              .add("totalPages", products.getTotalPages()).build());

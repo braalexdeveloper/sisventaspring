@@ -21,7 +21,7 @@ public class Product {
     @Size(max=100,message = "El nombre debe tener máximo 100 caracteres!")
     private String name;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @DecimalMin(value = "0.0", inclusive = false)
