@@ -11,16 +11,15 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    private final String secretKey="mi-clave-secreta-muy-larga-para-jwt-123456789";
-    private final long expiration=1000*60*60;
+    private final String secretKey = "mi-clave-secreta-muy-larga-para-jwt-123456789";
+    private final long expiration = 1000 * 60 * 60;
 
-    private SecretKey getSignInKey(){
-return Keys.hmacShaKeyFor(
-        secretKey.getBytes(StandardCharsets.UTF_8)
-);
+    private SecretKey getSignInKey() {
+        return Keys.hmacShaKeyFor(
+                secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
@@ -41,8 +40,7 @@ return Keys.hmacShaKeyFor(
 
     public boolean isTokenValid(
             String token,
-            UserDetails userDetails
-    ) {
+            UserDetails userDetails) {
 
         String username = extractUsername(token);
 
