@@ -30,4 +30,16 @@ public class ClientController {
         ClientResponse client=this.clientService.createClient(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBuilder().msg("Cliente creado con éxito").add("client",client).build());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String,Object>> updateClient(@PathVariable("id") Long id,@Valid @RequestBody ClientRequest request){
+        ClientResponse client=this.clientService.updateClient(id,request);
+        return ResponseEntity.ok(new ResponseBuilder().msg("Cliente actualizado con éxito").add("client",client).build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String,Object>> deleteClient(@PathVariable("id") Long id){
+        String response=this.clientService.deleteClient(id);
+        return ResponseEntity.ok(new ResponseBuilder().msg(response).build());
+    }
 }

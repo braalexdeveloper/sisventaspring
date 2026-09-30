@@ -74,7 +74,7 @@ public class AuthService {
         return new RegisterResponse(userSaved.getEmail(),userSaved.getRole().getName(),token);
     }
 
-    public RegisterResponse register(RegisterRequest request){
+    /*public RegisterResponse register(RegisterRequest request){
         Role role=roleRepository.findByName("User").orElseThrow(()->new ResourceNotFoundException("Rol no encontrado"));
         User user=new User();
         user.setEmail(request.getEmail());
@@ -85,5 +85,5 @@ public class AuthService {
         String token=jwtService.generateToken(userSaved);
 
         return new RegisterResponse(userSaved.getEmail(),userSaved.getRole().getName(),token);
-    }
+    }*/
 }

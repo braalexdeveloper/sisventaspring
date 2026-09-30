@@ -1,9 +1,8 @@
 package sisventaGroup.sisventaArtifact.modules.clients.dtos;
 
 public class ClientResponse {
-
+     private Long id;
     private String name;
-
 
     private String lastName;
 
@@ -17,6 +16,14 @@ public class ClientResponse {
     private String address;
 
     public ClientResponse() {
+    }
+
+    public Long getId(){
+        return id;
+    }
+
+    public void setId(Long id){
+        this.id=id;
     }
 
     public String getName() {

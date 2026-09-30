@@ -38,7 +38,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/categories/**",
                                 "/api/products/**",
-                                "/api/sales/**"
+                                "/api/sales/**",
+                                "/api/clients/**"
                         ).hasAnyRole("Admin", "User")
 
                         // Solo ADMIN
